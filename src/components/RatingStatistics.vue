@@ -1,23 +1,56 @@
 <template>
   <div :class="['rating-statistics', { dark: isDarkMode }]">
-    <el-card class="statistics-card">
-      <div class="header-container">
-        <el-button 
-          type="primary" 
-          @click="initChart" 
-          :loading="loading"
-          class="refresh-btn"
-        >
-          刷新数据
-        </el-button>
-      </div>
-      <div v-loading="loading">
-        <div v-if="chartData.length" ref="chart" style="height: 400px;"></div>
-        <p v-else>暂无评分数据</p>
-      </div>
-    </el-card>
+    <div class="header-container">
+      <el-button 
+        type="primary" 
+        @click="initChart" 
+        :loading="loading"
+        class="refresh-btn"
+      >
+        刷新数据
+      </el-button>
+    </div>
+    <div v-loading="loading" class="chart-wrapper">
+      <div v-if="chartData.length" ref="chart" class="chart-content"></div>
+      <p v-else class="no-data">暂无评分数据</p>
+    </div>
   </div>
 </template>
+
+<style scoped>
+.rating-statistics {
+  height: 100%;
+  padding: 16px;
+  background: transparent;
+}
+
+.header-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.chart-wrapper {
+  height: calc(100% - 60px);
+  background: var(--el-bg-color);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.chart-content {
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+}
+
+.no-data {
+  text-align: center;
+  color: var(--el-text-color-secondary);
+  padding: 80px 0;
+}
+
+/* 移除原卡片相关样式 */
+</style>
 
 <script>
 import { ElCard } from 'element-plus';
