@@ -14,7 +14,7 @@ export default defineConfig({
     host: '0.0.0.0',
     proxy: {
       '/api': {
-        target: 'http://http://192.168.31.107:58080',
+        target: 'http://192.168.31.107:58080', // 移除重复的http://
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }

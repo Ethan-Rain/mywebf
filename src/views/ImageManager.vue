@@ -13,7 +13,11 @@
       <el-rate :value="rating" @change="changeRating" class="rating" :disabled="isLoading"></el-rate>
     </div>
     <el-button v-if="image" type="primary" @click="refreshImage" class="refresh-button" :loading="isLoading">刷新图片</el-button>
-    <el-tabs type="border-card" class="tabs-container">
+    <el-tabs 
+      v-model="activeTab"
+      type="border-card" 
+      class="tabs-container"
+    >
       <el-tab-pane label="图片详细信息">
         <ImageInfo :imageInfo="imageInfo" :isDarkMode="isDarkMode" />
       </el-tab-pane>
@@ -27,8 +31,11 @@
           <el-input v-model="cacheSizeSetting" placeholder="缓存数量" type="number" min="1" max="20" class="cache-size-input"></el-input>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="评分统计">
-        <RatingStatistics :isDarkMode="isDarkMode" :isActive="activeTab === '评分统计'" />
+      <el-tab-pane label="评分统计" name="rating-stats">
+        <RatingStatistics 
+          :isDarkMode="isDarkMode" 
+          :isActive="activeTab === 'rating-stats'"
+        />
       </el-tab-pane>
     </el-tabs>
     <div v-if="isImageModalVisible" class="image-modal" @click="isImageModalVisible = false">
@@ -96,6 +103,9 @@ export default {
         this.refillCache();
       }
     },
+    activeTab(newVal) {
+      console.log('当前激活标签:', newVal);
+    }
   },
   methods: {
     async fetchRandomImage() {
