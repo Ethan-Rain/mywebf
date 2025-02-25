@@ -62,7 +62,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .import-section {
   display: flex;
   gap: 12px;
@@ -70,13 +70,17 @@ export default {
   max-width: 800px;
   flex-wrap: wrap;
   justify-content: center;
-  background: #ffffff; /* 白天模式背景 */
-  color: #000000; /* 白天模式文字颜色 */
-}
+  background: var(--el-bg-color);
+  color: var(--el-text-color-primary);
+  border: 1px solid var(--el-border-color);
+  border-radius: 8px;
+  padding: 16px;
 
-.import-section.dark {
-  background: #18191c; /* 夜间模式背景 */
-  color: #e0e0e0; /* 夜间模式文字颜色 */
+  &.dark {
+    background: var(--el-bg-color-overlay);
+    color: var(--el-text-color-primary);
+    border-color: var(--el-border-color-light);
+  }
 }
 
 .custom-input {

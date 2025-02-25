@@ -1,0 +1,20 @@
+  @forward "element-plus/theme-chalk/src/dark/var.scss" as dark-*;
+  
+  :root {
+    --el-bg-color-page: #f5f7fa;
+  }
+  
+  html.dark {
+    --el-bg-color-page: #121212;
+    --el-border-color-light: rgba(255, 255, 255, 0.12);
+    --el-border-color-lighter: rgba(255, 255, 255, 0.08);
+    --el-bg-color-overlay: #1e1e1e;
+    --el-border-color: rgba(255, 255, 255, 0.12);
+    --el-text-color-primary: rgba(255, 255, 255, 0.87);
+    --el-tabs-background: var(--el-bg-color-overlay);
+    
+    // 修正颜色混合语法
+    --el-button-bg-color: #{mix(map-get($--color-primary, 'base'), #121212, 30%)};
+    --el-button-hover-bg-color: #{mix(map-get($--color-primary, 'base'), #121212, 40%)};
+    --el-button-active-bg-color: #{mix(map-get($--color-primary, 'base'), #121212, 50%)};
+  }

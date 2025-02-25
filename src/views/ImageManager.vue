@@ -46,7 +46,7 @@ import { Loading } from '@element-plus/icons-vue';
 import axiosInstance from '@/utils/axiosInstance';
 import ImageInfo from '@/components/ImageInfo.vue';
 import ImageImport from '@/components/ImageImport.vue';
-import RatingStatistics from '@/components/RatingStatistics.vue'; // 新增：导入RatingStatistics组件
+import RatingStatistics from '@/components/RatingStatistics.vue';
 
 export default {
   name: 'ImageManager',
@@ -60,7 +60,7 @@ export default {
     Loading,
     ImageInfo,
     ImageImport,
-    RatingStatistics, // 新增：注册RatingStatistics组件
+    RatingStatistics,
   },
   data() {
     return {
@@ -73,58 +73,47 @@ export default {
       isLoading: false,
       rating: 0,
       isCacheEnabled: false,
-      cachedImages: [], // 改为临时缓存
+      cachedImages: [],
       cacheSize: 5,
-      cacheSizeSetting: 5, // 新增：缓存数量设置
+      cacheSizeSetting: 5,
       activeTab: '图片详细信息',
     };
   },
-
   watch: {
     isCacheEnabled(newVal) {
       if (!newVal) {
-        // 禁用缓存时清空缓存
         this.cachedImages = [];
       } else {
-        // 启用缓存时补充缓存
         this.refillCache();
       }
     },
     cacheSizeSetting(newVal) {
-      // 确保缓存数量在合理范围内
       this.cacheSize = Math.max(1, Math.min(20, parseInt(newVal, 10) || 5));
-      // 如果缓存数量减少，移除多余的缓存
       if (this.cachedImages.length > this.cacheSize) {
         this.cachedImages.splice(this.cacheSize);
       }
-      // 如果缓存数量增加，补充缓存
       if (this.isCacheEnabled) {
         this.refillCache();
       }
     },
   },
-
   methods: {
     async fetchRandomImage() {
       if (this.isLoading) return;
       this.isLoading = true;
 
       if (this.isCacheEnabled && this.cachedImages.length > 0) {
-        // 从缓存中获取图片
         const cachedImage = this.cachedImages.shift();
         this.image = cachedImage.image;
         this.imageInfo = cachedImage.imageInfo;
         this.rating = cachedImage.rating;
         this.isLoading = false;
-        // 异步补充缓存
         this.refillCache();
       } else {
-        // 从接口获取图片
         await this.loadImage();
         this.isLoading = false;
       }
     },
-
     async refillCache() {
       while (this.isCacheEnabled && this.cachedImages.length < this.cacheSize) {
         try {
@@ -142,9 +131,8 @@ export default {
         }
       }
     },
-
     async handleImportImages(directoryPath) {
-      if (this.isLoading) return; // 如果正在加载，直接返回
+      if (this.isLoading) return;
       this.isLoading = true;
       try {
         const sanitizedPath = directoryPath.replace(/\\/g, '\\\\');
@@ -174,7 +162,7 @@ export default {
       }
     },
     async refreshImage() {
-      if (this.isLoading) return; // 如果正在加载，直接返回
+      if (this.isLoading) return;
       await this.loadImage();
     },
     async loadImage() {
@@ -184,14 +172,12 @@ export default {
           this.image = `data:image/jpeg;base64,${response.data.data.base64Image}`;
           this.imageInfo = response.data.data.imageInfo;
           this.rating = response.data.data.score || 0;
-          // 如果缓存已启用，将新图片加入缓存
           if (this.isCacheEnabled) {
             this.cachedImages.push({
               image: this.image,
               imageInfo: this.imageInfo,
               rating: this.rating,
             });
-            // 如果缓存超过最大大小，移除最早的缓存
             if (this.cachedImages.length > this.cacheSize) {
               this.cachedImages.shift();
             }
@@ -227,7 +213,80 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.image-manager {
+  padding: 20px;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0 auto;
+  max-width: 1200px;
+  background: #f1f2f3;
+  transition: background-color 0.3s, color 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  border-radius: 16px;
+  border: 1px solid #e5e9ef;
+}
+
+.image-manager.dark {
+  background: #18191c;
+  color: #e0e0e0;
+}
+.button-group {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 800px;
+  
+  .custom-button {
+    padding: 12px 28px;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+// 增加刷新按钮特殊样式
+.refresh-button {
+  margin-top: 20px;
+  border: 2px solid var(--el-color-primary);
+  background: linear-gradient(
+    45deg,
+    var(--el-color-primary),
+    var(--el-color-primary-light-3)
+  );
+  color: white;
+}
+
+// 适配夜间模式
+.image-manager.dark {
+  .custom-button {
+    background: var(--el-color-primary-dark-2);
+    border-color: var(--el-color-primary-light-3);
+    
+    &:hover {
+      background: var(--el-color-primary-dark-1);
+    }
+  }
+  
+  .refresh-button {
+    border-color: var(--el-color-primary-light-5);
+  }
+}
 .loading-container {
   width: 100%;
   max-width: 800px;
@@ -239,58 +298,23 @@ export default {
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
-
-.image-manager {
-  padding: 20px;
-  width: 100%;
-  min-height: 100vh;
-  margin: 0 auto;
-  max-width: 1200px;
-  background: #f1f2f3; /* Bilibili风格背景色 */
-  transition: background-color 0.3s, color 0.3s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-  border-radius: 16px;
-  border: 1px solid #e5e9ef; /* Bilibili风格边框 */
-}
-
-.image-manager.dark {
-  background: #18191c; /* Bilibili深色模式背景 */
-  color: #e0e0e0;
-}
-
-h1 {
-  font-size: 2.2rem;
-  color: #00a1d6; /* Bilibili主题色 */
-  margin: 0;
-  padding: 20px 0;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.button-group {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  justify-content: center;
-  width: 100%;
-  max-width: 800px;
-}
-
 .image-container {
   width: 100%;
   max-width: 800px;
   height: 600px;
-  background: var(--el-bg-color); /* 使用Element Plus的主题变量 */
-  backdrop-filter: blur(5px);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  background: var(--el-bg-color-page);  // 从--el-bg-color改为层级更深的背景变量
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: inherit;
+    z-index: -1;
+  }
 }
 
 .image-container img {
@@ -298,63 +322,41 @@ h1 {
   height: 100%;
   object-fit: contain;
   cursor: pointer;
-  transition: transform 0.3s ease;
-  background-color: transparent;
+  background: var(--el-bg-color-page); // 添加图片背景色继承
+  padding: 8px; // 增加呼吸空间
 }
-
-.image-container:hover {
-  transform: scale(1.02);
-}
-
-.image-container img:hover {
-  transform: scale(1.05);
-}
-
 .rating-container {
   width: 100%;
   max-width: 800px;
   margin-top: 16px;
   display: flex;
   justify-content: center;
+  .rating {
+    --el-rate-icon-size: 48px;  // 从42px增大到48px
+    --el-rate-text-color: var(--el-text-color-regular);
+    --el-rate-disabled-void-color: var(--el-border-color-light);
+    
+    // 新增以下调整
+    margin: 24px 0;
+    transform: scale(1.1);
+    transform-origin: center;
+    
+    .el-rate__item {
+      margin-right: 16px !important;  // 增加星星间距
+    }
+  }
+  @media (max-width: 768px) {
+    .rating {
+      --el-rate-icon-size: 36px;  // 移动端适当缩小
+      transform: none;
+    }
+  }
 }
-
-.rating {
-  margin-top: 16px;
-  font-size: 36px; /* 进一步增加星星的大小 */
-  --el-rate-icon-size: 36px; /* 确保星星图标的大小与字体大小一致 */
-}
-
-.import-section {
-  display: flex;
-  gap: 12px;
-  width: 100%;
-  max-width: 800px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.custom-input {
-  flex: 1;
-  min-width: 250px;
-}
-
-.refresh-button {
-  margin-top: 16px;
-  background-color: #00a1d6; /* Bilibili主题色 */
-  border-color: #00a1d6;
-}
-
-.refresh-button:hover {
-  background-color: #0091c6; /* 深色主题色 */
-  border-color: #0091c6;
-}
-
 .tabs-container {
   width: 100%;
   max-width: 800px;
   margin-top: 16px;
-  background: var(--el-bg-color); /* 使用Element Plus的主题变量 */
-  backdrop-filter: blur(5px);
+  background: var(--el-bg-color);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -379,12 +381,6 @@ h1 {
   max-height: 90%;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease;
-  object-fit: contain;
-}
-
-.modal-image:hover {
-  transform: scale(1.02);
 }
 
 .config-section {

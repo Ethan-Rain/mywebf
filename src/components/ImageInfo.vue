@@ -20,18 +20,15 @@ export default {
 
 <style scoped>
 .image-info {
-  width: 100%;
-  background: var(--el-bg-color); /* 使用Element Plus的主题变量 */
-  backdrop-filter: blur(5px);
-  padding: 24px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-  color: var(--el-text-color-regular); /* 使用Element Plus的主题变量 */
+  background: var(--el-bg-color-overlay);
+  border: 1px solid var(--el-border-color);
+  color: var(--el-text-color-primary);
+  
+  .info-item {
+    background: var(--el-bg-color);
+    border-color: var(--el-border-color);
+  }
 }
-
 .image-info .info-item {
   padding: 8px 12px;
   background-color: var(--el-fill-color-light); /* 使用Element Plus的主题变量 */

@@ -58,6 +58,14 @@
   font-weight: normal;
 }
 
+/* 删除重复的body样式 */
+body {
+  min-height: 100vh;
+  background: var(--el-bg-color-page); /* 移除!important */
+  color: var(--el-text-color-primary);
+  /* 保持其他原有属性 */
+}
+
 body {
   min-height: 100vh;
   color: var(--color-text);
