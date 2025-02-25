@@ -37,6 +37,12 @@
           :isActive="activeTab === 'rating-stats'"
         />
       </el-tab-pane>
+      <el-tab-pane label="筛选设置">
+        <ImageFilterConfig 
+          @filter-change="handleFilterChange"
+          :loading="isLoading" 
+        />
+      </el-tab-pane>
     </el-tabs>
     <div v-if="isImageModalVisible" class="image-modal" @click="isImageModalVisible = false">
       <img :src="image" alt="Full Size" class="modal-image" />
@@ -54,6 +60,7 @@ import axiosInstance from '@/utils/axiosInstance';
 import ImageInfo from '@/components/ImageInfo.vue';
 import ImageImport from '@/components/ImageImport.vue';
 import RatingStatistics from '@/components/RatingStatistics.vue';
+import ImageFilterConfig from '@/components/ImageFilterConfig.vue';
 
 export default {
   name: 'ImageManager',
@@ -68,6 +75,7 @@ export default {
     ImageInfo,
     ImageImport,
     RatingStatistics,
+    ImageFilterConfig,
   },
   data() {
     return {
@@ -84,6 +92,12 @@ export default {
       cacheSize: 5,
       cacheSizeSetting: 5,
       activeTab: '图片详细信息',
+      currentFilter: {
+        minScore: null,
+        maxScore: null,
+        category: '',
+        status: ''
+      }
     };
   },
   watch: {
@@ -111,16 +125,34 @@ export default {
     async fetchRandomImage() {
       if (this.isLoading) return;
       this.isLoading = true;
+      this.error = null;
 
-      if (this.isCacheEnabled && this.cachedImages.length > 0) {
-        const cachedImage = this.cachedImages.shift();
-        this.image = cachedImage.image;
-        this.imageInfo = cachedImage.imageInfo;
-        this.rating = cachedImage.rating;
-        this.isLoading = false;
-        this.refillCache();
-      } else {
-        await this.loadImage();
+      try {
+        const params = {};
+        if (this.currentFilter.minScore !== null) params.minScore = this.currentFilter.minScore;
+        if (this.currentFilter.maxScore !== null) params.maxScore = this.currentFilter.maxScore;
+        if (this.currentFilter.category) params.category = this.currentFilter.category;
+        if (this.currentFilter.status) params.status = this.currentFilter.status;
+
+        const response = await axiosInstance.get('/images/getRandomImageWithConditions', { params });
+        
+        if (response.data.code === 200 && response.data.data.images.length > 0) {
+          const firstImage = response.data.data.images[0];
+          const imageId = firstImage.id;
+          
+          this.image = `data:image/jpeg;base64,${response.data.data.base64Images[imageId]}`;
+          this.imageInfo = firstImage;
+          this.rating = response.data.data.ratings[imageId] || 0;
+        } else {
+          this.error = '未找到符合条件的图片';
+          this.image = null;
+          this.imageInfo = null;
+          this.rating = 0;
+        }
+      } catch (error) {
+        console.error('Error fetching image:', error);
+        this.error = '获取图片时出错';
+      } finally {
         this.isLoading = false;
       }
     },
@@ -219,6 +251,19 @@ export default {
     showImageInModal() {
       this.isImageModalVisible = true;
     },
+    handleFilterChange(filter) {
+      this.currentFilter = filter;
+      // 保存筛选条件到本地存储
+      localStorage.setItem('imageFilter', JSON.stringify(filter));
+      this.fetchRandomImage();
+    },
+  },
+  mounted() {
+    // 从本地存储恢复筛选条件
+    const savedFilter = localStorage.getItem('imageFilter');
+    if (savedFilter) {
+      this.currentFilter = JSON.parse(savedFilter);
+    }
   },
 };
 </script>
