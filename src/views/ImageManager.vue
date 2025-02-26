@@ -88,7 +88,9 @@ export default {
       isLoading: false,
       rating: 0,
       isCacheEnabled: false,
-      cachedImages: [],
+      cachedImages: {}, // 改为对象，按条件存储缓存
+      isCacheRefilling: false, // 添加标记，防止并发请求
+      maxConcurrentRequests: 3, // 限制并发请求数
       cacheSize: 5,
       cacheSizeSetting: 5,
       activeTab: '图片详细信息',
@@ -109,21 +111,76 @@ export default {
       }
     },
     cacheSizeSetting(newVal) {
+      const oldSize = this.cacheSize;
       this.cacheSize = Math.max(1, Math.min(20, parseInt(newVal, 10) || 5));
-      if (this.cachedImages.length > this.cacheSize) {
-        this.cachedImages.splice(this.cacheSize);
+      
+      // 优化缓存大小调整逻辑
+      if (this.cacheSize < oldSize) {
+        Object.keys(this.cachedImages).forEach(key => {
+          // 保留最新的图片
+          this.cachedImages[key] = this.cachedImages[key].slice(-this.cacheSize);
+        });
       }
+      
       if (this.isCacheEnabled) {
         this.refillCache();
       }
     },
     activeTab(newVal) {
       console.log('当前激活标签:', newVal);
+    },
+    currentFilter: {
+      handler() {
+        // 筛选条件变化时，异步补充对应条件的缓存
+        if (this.isCacheEnabled) {
+          this.refillCache();
+        }
+      },
+      deep: true
     }
   },
   methods: {
+    // 获取缓存key
+    getCacheKey() {
+      return JSON.stringify(this.currentFilter);
+    },
+
+    // 从缓存获取图片
+    getFromCache() {
+      if (!this.isCacheEnabled) return null;
+      const key = this.getCacheKey();
+      const cache = this.cachedImages[key] || [];
+      return cache.length > 0 ? cache.shift() : null;
+    },
+
+    // 添加到缓存
+    addToCache(image, key = this.getCacheKey()) {
+      if (!this.isCacheEnabled) return;
+      if (!this.cachedImages[key]) {
+        this.cachedImages[key] = [];
+      }
+      this.cachedImages[key].push(image);
+      
+      // 限制每个条件的缓存大小
+      while (this.cachedImages[key].length > this.cacheSize) {
+        this.cachedImages[key].shift();
+      }
+    },
+
     async fetchRandomImage() {
       if (this.isLoading) return;
+      
+      // 优先从缓存获取
+      const cachedImage = this.getFromCache();
+      if (cachedImage) {
+        this.image = cachedImage.image;
+        this.imageInfo = cachedImage.imageInfo;
+        this.rating = cachedImage.rating;
+        // 异步补充缓存
+        this.refillCache();
+        return;
+      }
+
       this.isLoading = true;
       this.error = null;
 
@@ -157,20 +214,43 @@ export default {
       }
     },
     async refillCache() {
-      while (this.isCacheEnabled && this.cachedImages.length < this.cacheSize) {
-        try {
-          const response = await axiosInstance.get('/images/getRandomImageWithInfo');
-          if (response.data.code === 200) {
-            const cachedImage = {
-              image: `data:image/jpeg;base64,${response.data.data.base64Image}`,
-              imageInfo: response.data.data.imageInfo,
-              rating: response.data.data.score || 0,
-            };
-            this.cachedImages.push(cachedImage);
-          }
-        } catch (error) {
-          console.error('Error refilling cache:', error);
+      if (!this.isCacheEnabled || this.isCacheRefilling) return;
+      
+      this.isCacheRefilling = true;
+      const key = this.getCacheKey();
+      const cache = this.cachedImages[key] || [];
+      
+      try {
+        const requests = [];
+        const neededImages = this.cacheSize - cache.length;
+        
+        // 限制并发请求数量
+        for (let i = 0; i < Math.min(neededImages, this.maxConcurrentRequests); i++) {
+          requests.push(
+            axiosInstance.get('/images/getRandomImageWithConditions', {
+              params: this.currentFilter
+            })
+          );
         }
+        
+        const responses = await Promise.all(requests);
+        
+        responses.forEach(response => {
+          if (response.data.code === 200 && response.data.data.images.length > 0) {
+            const firstImage = response.data.data.images[0];
+            const imageId = firstImage.id;
+            
+            this.addToCache({
+              image: `data:image/jpeg;base64,${response.data.data.base64Images[imageId]}`,
+              imageInfo: firstImage,
+              rating: response.data.data.ratings[imageId] || 0
+            }, key);
+          }
+        });
+      } catch (error) {
+        console.error('Error refilling cache:', error);
+      } finally {
+        this.isCacheRefilling = false;
       }
     },
     async handleImportImages(directoryPath) {
