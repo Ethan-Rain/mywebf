@@ -118,4 +118,43 @@ export default {
   text-align: center;
   line-height: 32px;
 }
+
+@media (max-width: 768px) {
+  .filter-config {
+    padding: 8px;
+    margin: 0 -8px;
+    border-radius: 0;
+  }
+  
+  :deep(.el-form-item) {
+    margin-bottom: 8px;
+  }
+  
+  :deep(.el-form-item__label) {
+    padding: 0 0 4px;
+    font-size: 13px;
+  }
+  
+  :deep(.el-form-item__content) {
+    line-height: 1.2;
+  }
+  
+  :deep(.el-input-number),
+  :deep(.el-select) {
+    width: 100%;
+    .el-input__wrapper {
+      padding: 0 8px;
+    }
+    input {
+      height: 36px;
+    }
+  }
+  
+  :deep(.el-button) {
+    width: 100%;
+    height: 36px;
+    padding: 8px;
+    font-size: 14px;
+  }
+}
 </style>

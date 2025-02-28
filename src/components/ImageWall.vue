@@ -357,94 +357,70 @@ export default {
 
 <style scoped lang="scss">
 .image-wall {
-  width: 100%;
-  
+  // 添加移动端边距
+  padding: 0 8px;
+
   .wall-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-    padding: 0 16px;
+    flex-direction: column; // 移动端垂直排列
+    gap: 12px;
+    padding: 0 8px;
+
+    // 移动端设置项字号调整
+    .el-select, .el-switch, .el-button {
+      font-size: 14px;
+    }
 
     .wall-settings {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      
-      .setting-switch {
-        margin: 0 8px;
-      }
+      width: 100%;
+      justify-content: space-between;
     }
   }
   
   .wall-container {
-    display: grid;
-    gap: 16px;
-    padding: 16px;
-    
+    gap: 8px;
+    padding: 8px;
+
+    // 移动端网格布局优化
     &.small {
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-      .image-item {
-        height: 160px;
-      }
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      .image-item { height: 120px; }
     }
-    
     &.medium {
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      .image-item {
-        height: 240px;
-      }
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      .image-item { height: 160px; }
     }
-    
     &.large {
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      .image-item {
-        height: 320px;
-      }
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      .image-item { height: 200px; }
     }
   }
-  
+
+  // 移动端评分组件优化
+  .image-overlay {
+    padding: 8px;
+    :deep(.el-rate) {
+      --el-rate-icon-size: 20px;
+    }
+  }
+}
+
+// 添加移动端媒体查询
+@media (max-width: 768px) {
   .image-item {
-    position: relative;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
     
     &:hover {
-      transform: translateY(-4px);
-      
-      .image-overlay {
-        opacity: 1;
-      }
-    }
-    
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      transform: none; // 移除移动端悬停效果
     }
     
     .image-overlay {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 12px;
-      background: rgba(0, 0, 0, 0.6);
-      opacity: 0;
-      transition: opacity 0.3s;
-      display: flex;
-      justify-content: center;
-      cursor: default;
+      opacity: 0.9; // 保持评分可见性
     }
   }
   
   .loading-overlay {
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-    font-size: 24px;
+    font-size: 18px;
+    padding: 12px;
   }
 }
 </style>
