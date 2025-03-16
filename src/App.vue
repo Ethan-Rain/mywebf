@@ -4,10 +4,38 @@ import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-  <RouterView />
+  <div id="app">
+    <nav>
+      <router-link to="/image-manager">图片管理</router-link> |
+      <router-link to="/video-player">视频播放</router-link>
+    </nav>
+    <RouterView />
+  </div>
 </template>
 
 <style scoped>
+#app {
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+nav {
+  padding: 16px;
+  background-color: #f8f9fa;
+  text-align: center;
+}
+
+nav a {
+  font-weight: bold;
+  color: #2c3e50;
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+nav a.router-link-exact-active {
+  color: #42b983;
+}
+
 header {
   line-height: 1.5;
   max-height: 100vh;
