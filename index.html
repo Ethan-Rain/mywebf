@@ -1,58 +1,96 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" style="width:100%; padding:0; margin:0; overflow-x:hidden;">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的网站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="icon" href="/favicon.ico">
+    <title>图片管理系统</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        /* 全局重置规则 */
+        *, *::before, *::after {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            background-color: #f8f9fa;
         }
-        header {
-            background-color: #007bff;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        
+        html {
+            width: 100% !important;
+            width: 100vw !important;
+            overflow-x: hidden !important;
         }
-        .container {
-            width: 90%;
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 30px;
-            background-color: white;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-            border-radius: 12px;
-            text-align: center;
+        
+        body {
+            width: 100% !important;
+            width: 100vw !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow-x: hidden !important;
+            position: relative !important;
         }
-        .welcome-section h1 {
-            font-size: 2.2rem;
-            color: #343a40;
-            margin-bottom: 15px;
+        
+        #app {
+            width: 100% !important;
+            width: 100vw !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow-x: hidden !important;
         }
-        .welcome-section p {
-            font-size: 1.1rem;
-            color: #495057;
-            line-height: 1.6;
-            max-width: 600px;
-            margin: 0 auto;
+        
+        /* 全局鼠标样式 */
+        body {
+            cursor: url('/cursors/Normal Select.ani'), auto !important;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        a, button, .clickable {
+            cursor: url('/cursors/Link.ani'), pointer !important;
+        }
+
+        input, textarea, [contenteditable] {
+            cursor: url('/cursors/Text Select.ani'), text !important;
         }
     </style>
 </head>
-<body>
-    <header>
-        <h1>我的网站</h1>
-    </header>
-    <div class="container">
-        <section class="welcome-section">
-            <h1>欢迎光临</h1>
-            <p>这里是您的专属页面，简洁而美观，为您提供最核心的信息。</p>
-        </section>
-    </div>
+<body style="width:100%; width:100vw; margin:0; padding:0; overflow-x:hidden; position:relative;">
+    <!-- Vue 应用的挂载点 -->
+    <div id="app" style="width:100%; width:100vw; margin:0; padding:0; overflow-x:hidden;"></div>
+    
+    <!-- 加载入口脚本 -->
+    <script type="module" src="/src/main.ts"></script>
+    
+    <!-- 强制重新计算布局脚本 -->
+    <script>
+        // 页面加载前设置
+        document.documentElement.style.width = '100vw';
+        document.documentElement.style.margin = '0';
+        document.documentElement.style.padding = '0';
+        document.documentElement.style.overflowX = 'hidden';
+        
+        // 页面加载完成后调整
+        window.addEventListener('load', function() {
+            // 重复多次调整以确保生效
+            function adjustLayout() {
+                document.documentElement.style.width = '100vw';
+                document.body.style.width = '100vw';
+                var app = document.getElementById('app');
+                if (app) {
+                    app.style.width = '100vw';
+                    app.style.margin = '0';
+                    app.style.padding = '0';
+                    app.style.overflowX = 'hidden';
+                }
+                
+                // 强制触发重排
+                var temp = document.body.offsetHeight;
+                window.dispatchEvent(new Event('resize'));
+            }
+            
+            // 多次尝试调整
+            adjustLayout();
+            setTimeout(adjustLayout, 100);
+            setTimeout(adjustLayout, 500);
+            setTimeout(adjustLayout, 1000);
+        });
+    </script>
 </body>
 </html>
-
-

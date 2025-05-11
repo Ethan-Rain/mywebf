@@ -1,0 +1,240 @@
+<script setup lang="ts">
+// 导入必要的组件和函数
+</script>
+
+<template>
+  <div id="homeContainer">
+    <!-- 英雄区域 - 全屏横幅 -->
+    <section id="heroSection">
+      <div class="content-wrap">
+        <h1>图片管理系统</h1>
+        <p>简单高效的图片分类、评分和管理工具</p>
+        <button>开始使用</button>
+      </div>
+    </section>
+    
+    <!-- 功能区域 - 全屏横幅 -->
+    <section id="featuresSection">
+      <div class="content-wrap">
+        <h2>主要功能</h2>
+        <div class="card-container">
+          <div class="card">
+            <h3>图片浏览</h3>
+            <p>支持随机展示和分类浏览图片</p>
+          </div>
+          <div class="card">
+            <h3>评分系统</h3>
+            <p>对图片进行评分并根据评分过滤</p>
+          </div>
+          <div class="card">
+            <h3>专注模式</h3>
+            <p>支持全屏模式，没有干扰地浏览图片</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 统计区域 - 全屏横幅 -->
+    <section id="statsSection">
+      <div class="content-wrap">
+        <h2>系统功能</h2>
+        <div class="stats-container">
+          <div class="stat-box">
+            <div class="icon">📷</div>
+            <div class="number">10+</div>
+            <div class="label">图片来源</div>
+          </div>
+          <div class="stat-box">
+            <div class="icon">🖼</div>
+            <div class="number">1000+</div>
+            <div class="label">支持图片格式</div>
+          </div>
+          <div class="stat-box">
+            <div class="icon">📈</div>
+            <div class="number">5★</div>
+            <div class="label">评分系统</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</template>
+
+<style>
+/* 主容器样式 */
+#homeContainer {
+  width: 100%;
+  min-height: 100vh;
+  background-image: url('/images/wakaba-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* 通用样式 */
+.content-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* 英雄区域样式 */
+#heroSection {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 80px 0;
+  text-align: center;
+}
+
+#heroSection h1 {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#heroSection p {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#heroSection button {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  font-size: 1.2rem;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#heroSection button:hover {
+  background-color: #2980b9;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* 功能区域样式 */
+#featuresSection {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 80px 0;
+  text-align: center;
+}
+
+#featuresSection h2 {
+  font-size: 2.5rem;
+  margin-bottom: 50px;
+  color: #2c3e50;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.card {
+  flex: 1;
+  min-width: 300px;
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.card h3 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: #3498db;
+}
+
+.card p {
+  font-size: 1.1rem;
+  color: #7f8c8d;
+}
+
+/* 统计区域样式 */
+#statsSection {
+  width: 100%;
+  background-color: rgba(33, 33, 33, 0.9);
+  color: white;
+  padding: 80px 0;
+  text-align: center;
+}
+
+#statsSection h2 {
+  font-size: 2.5rem;
+  margin-bottom: 50px;
+}
+
+.stats-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 60px;
+}
+
+.stat-box {
+  flex: 1;
+  min-width: 200px;
+  max-width: 300px;
+}
+
+.icon {
+  font-size: 3.5rem;
+  margin-bottom: 15px;
+}
+
+.number {
+  font-size: 2.8rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #3498db;
+}
+
+.label {
+  font-size: 1.2rem;
+  color: #ecf0f1;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  #heroSection h1 {
+    font-size: 2.5rem;
+  }
+  
+  #heroSection p {
+    font-size: 1.2rem;
+  }
+  
+  #featuresSection h2,
+  #statsSection h2 {
+    font-size: 2rem;
+  }
+  
+  .card-container,
+  .stats-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .card,
+  .stat-box {
+    min-width: 100%;
+  }
+}
+</style>
