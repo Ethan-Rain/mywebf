@@ -6,9 +6,8 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomeView,
-    },
+      component: HomeView // 正确指向首页组件
+    }
   ],
 })
 

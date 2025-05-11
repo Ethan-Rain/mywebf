@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <h1>{{ title }}</h1>
-    <p>{{ description }}</p>
+    <h1>Welcome to HomeView</h1>
+
   </div>
 </template>
 
@@ -10,6 +10,7 @@
 </script>
 
 <style scoped>
+
 .home {
   display: flex;
   flex-direction: column;
@@ -21,6 +22,7 @@
   min-height: 100vh;
   box-sizing: border-box;
   margin: 0;
+  padding: 0;
 }
 
 h1 {

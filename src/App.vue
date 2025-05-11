@@ -19,7 +19,7 @@ html, body, #app {
 }
 
 #app {
-  position: relative;
-  overflow-x: hidden;
+  flex-grow: 1; /* 新增flex扩展属性 */
+  min-height: calc(100vh - env(safe-area-inset-top));
 }
 </style>
