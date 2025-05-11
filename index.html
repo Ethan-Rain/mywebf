@@ -10,61 +10,34 @@
             margin: 0;
             padding: 0;
             background-color: #f8f9fa;
-            color: #212529;
         }
         header {
             background-color: #007bff;
             color: white;
             padding: 20px 0;
             text-align: center;
-        }
-        nav {
-            background-color: #343a40;
-            overflow: hidden;
-        }
-        nav a {
-            float: left;
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
-        nav a:hover {
-            background-color: #0056b3;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .container {
-            width: 80%;
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
+            width: 90%;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
             background-color: white;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            border-radius: 12px;
+            text-align: center;
         }
-        h1 {
+        .welcome-section h1 {
+            font-size: 2.2rem;
             color: #343a40;
             margin-bottom: 15px;
         }
-        p {
+        .welcome-section p {
+            font-size: 1.1rem;
             color: #495057;
             line-height: 1.6;
-        }
-        .welcome-section {
-            text-align: center;
-            padding: 50px 0;
-            background-color: #e9ecef;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-        .welcome-section h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-        .welcome-section p {
-            font-size: 1.2rem;
-            max-width: 800px;
+            max-width: 600px;
             margin: 0 auto;
         }
     </style>
@@ -73,28 +46,11 @@
     <header>
         <h1>我的网站</h1>
     </header>
-    <nav>
-        <a href="#home">首页</a>
-        <a href="#about">关于我们</a>
-        <a href="#contact">联系我们</a>
-    </nav>
     <div class="container">
         <section class="welcome-section">
             <h1>欢迎光临</h1>
-            <p>这里是您的主页，您可以在这里找到关于我们的信息和联系我们的方式。</p>
+            <p>这里是您的专属页面，简洁而美观，为您提供最核心的信息。</p>
         </section>
-        <!-- 删除:<section>
-            <h2>关于我们</h2>
-            <p>我们是一家专注于提供高质量服务的公司，致力于为客户提供最佳的解决方案。</p>
-        </section> -->
-        <!-- 删除:<section>
-            <h2>联系我们</h2>
-            <p>如果您有任何问题或建议，请随时联系我们。</p>
-            <ul>
-                <li>Email: contact@mywebsite.com</li>
-                <li>Phone: +123 456 7890</li>
-            </ul>
-        </section> -->
     </div>
 </body>
 </html>
