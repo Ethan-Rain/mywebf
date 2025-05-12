@@ -10,5 +10,11 @@
     {
       "path": "./tsconfig.vitest.json"
     }
-  ]
+  ],
+  "compilerOptions": {
+    "types": ["ani-cursor"],
+    "paths": {
+      "ani-cursor": ["./src/types/ani-cursor"]
+    }
+  }
 }

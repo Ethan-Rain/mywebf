@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <h1>Welcome to HomeView</h1>
-
+    <h1>Wakaba Mutsumi</h1>
+    <img src="/img/Wakaba.png" alt="Wakaba Mutsumi" style="heig"/>
   </div>
 </template>
 
@@ -10,7 +10,6 @@
 </script>
 
 <style scoped>
-
 .home {
   display: flex;
   flex-direction: column;
