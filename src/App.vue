@@ -36,15 +36,13 @@
 
 /* 统一页脚样式 */
 .icp-footer {
+  /* 移除 fixed 定位相关属性 */
+  position: static; /* 或直接删除position属性 */
+  /* 保留其他样式 */
   padding: 1.5rem 0;
   background: rgba(0, 0, 0, 0.8);
   color: #c1d7c1;
   text-align: center;
-  position: fixed; /* 修改为固定定位 */
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
   backdrop-filter: blur(5px);
 }
 
@@ -53,7 +51,6 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  padding-bottom: 80px; /* 添加底部内边距防止内容遮挡 */
 }
 
 /* 页脚链接样式 */
