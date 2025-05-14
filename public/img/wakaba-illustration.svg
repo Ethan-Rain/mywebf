@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="300" height="300" viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景圆 -->
+  <circle cx="150" cy="150" r="140" fill="#FFEBF0"/>
+  
+  <!-- 头发 -->
+  <path d="M100 80C100 57.9086 117.909 40 140 40H160C182.091 40 200 57.9086 200 80V130C200 152.091 182.091 170 160 170H140C117.909 170 100 152.091 100 130V80Z" fill="#5D4037"/>
+  
+  <!-- 脸 -->
+  <circle cx="120" cy="110" r="15" fill="#FFD6E7"/>
+  <circle cx="180" cy="110" r="15" fill="#FFD6E7"/>
+  <path d="M120 140C120 126.193 131.193 135 150 135C168.807 135 180 126.193 180 140" stroke="#FF8FAB" stroke-width="4" stroke-linecap="round"/>
+  
+  <!-- 眼睛 -->
+  <circle cx="115" cy="110" r="5" fill="#5D4037"/>
+  <circle cx="175" cy="110" r="5" fill="#5D4037"/>
+  
+  <!-- 腮红 -->
+  <circle cx="100" cy="120" r="10" fill="#FFB6C1" opacity="0.8"/>
+  <circle cx="190" cy="120" r="10" fill="#FFB6C1" opacity="0.8"/>
+  
+  <!-- 身体 -->
+  <path d="M130 170L140 200H160L170 170" stroke="#FF8FAB" stroke-width="8" stroke-linecap="round"/>
+  
+  <!-- 装饰 -->
+  <circle cx="150" cy="70" r="10" fill="#FF8FAB"/>
+  <circle cx="150" cy="70" r="5" fill="white"/>
+  
+  <!-- 头发装饰 -->
+  <path d="M110 60C110 53.3726 115.373 48 122 48H128C134.627 48 140 53.3726 140 60V70H110V60Z" fill="#FF8FAB"/>
+  <path d="M160 60C160 53.3726 165.373 48 172 48H178C184.627 48 190 53.3726 190 60V70H160V60Z" fill="#FF8FAB"/>
+</svg>
