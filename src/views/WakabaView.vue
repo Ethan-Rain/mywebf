@@ -152,7 +152,7 @@ const handleImageError = () => {
 .planet {
   width: 12px;
   height: 12px;
-  background-color: white;
+  background-color: rgba(120, 179, 139, 0.3);
   border-radius: 50%;
   position: absolute;
   top: -6px;
@@ -160,7 +160,7 @@ const handleImageError = () => {
   transform: translateX(-50%);
 }
 .earth {
-  background-color: #0af;
+  background-color: rgba(120, 179, 139, 0.3);
   position: absolute;
 }
 .moon-orbit {
