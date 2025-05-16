@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <!-- 脉冲环 -->
+    <!-- 脉冲环（3 层 + 渐变描边） -->
     <div class="ring ring-xsmall"></div>
     <div class="ring ring-small"></div>
     <div class="ring ring-large"></div>
@@ -28,6 +28,7 @@
     </div>
 
     <img
+      ref="character"
       class="character-img"
       src="/img/Wakaba.png"
       alt="Wakaba Mutsumi"
@@ -37,17 +38,24 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+
 const router = useRouter()
 const goToLogin = () => router.push('/login')
+
+// 正确初始化 ref
+const character = ref<HTMLElement | null>(null)
 </script>
 
 <style scoped>
-/* 变量定义移动到 .home 上 */
-.home {
+:root {
   --main-green: #4e7c5f;
   --accent-green: #78b38b;
+}
 
+/* 布局 */
+.home {
   position: relative;
   display: flex;
   align-items: center;
@@ -57,7 +65,7 @@ const goToLogin = () => router.push('/login')
   overflow: hidden;
 }
 
-/* 脉冲环 */
+/* 脉冲环（渐变描边 + 阴影） */
 .ring {
   position: absolute;
   border-radius: 50%;
@@ -68,19 +76,19 @@ const goToLogin = () => router.push('/login')
 .ring-xsmall {
   width: 120px; height: 120px;
   top: 34%; left: 14%;
-  border: 2px solid var(--accent-green);
+  border: 2px solid var(--accent-green, #78b38b);
   animation-delay: 0.8s;
 }
 .ring-small {
   width: 220px; height: 220px;
   top: 28%; left: 8%;
-  border: 2px solid var(--main-green);
+  border: 2px solid var(--main-green, #4e7c5f);
   animation-delay: 0s;
 }
 .ring-large {
   width: 340px; height: 340px;
   top: 24%; left: 4%;
-  border: 2px solid var(--accent-green);
+  border: 2px solid var(--accent-green, #78b38b);
   animation-delay: 1.5s;
 }
 @keyframes pulse {
@@ -89,7 +97,7 @@ const goToLogin = () => router.push('/login')
   100% { transform: scale(1.2); opacity: 0; }
 }
 
-/* 背景小颗粒 */
+/* 背景颗粒 */
 .dots-bg {
   position: absolute;
   inset: 0;
@@ -136,7 +144,7 @@ const goToLogin = () => router.push('/login')
 .underline {
   width: clamp(40px,10vw,80px);
   height: 0.3rem;
-  background: linear-gradient(90deg,var(--main-green),var(--accent-green));
+  background: linear-gradient(90deg, var(--main-green), var(--accent-green));
   margin-bottom: 24px;
 }
 
@@ -150,7 +158,7 @@ const goToLogin = () => router.push('/login')
   border-radius: 24px;
   background: linear-gradient(145deg,var(--main-green),var(--accent-green));
   box-shadow: 0 6px 12px rgba(58,93,74,0.3);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: box-shadow 0.2s, transform 0.2s;
 }
 .enter-btn:focus-visible {
   outline: 2px solid var(--accent-green);
@@ -159,18 +167,12 @@ const goToLogin = () => router.push('/login')
 .enter-btn::before {
   content:"";
   position:absolute; top:0; left:-100%;
-  width:100%; height:100%;
+  width:100%;height:100%;
   background: rgba(255,255,255,0.2);
   transform: skewX(-25deg);
 }
-.enter-btn:hover::before {
-  left:200%;
-  transition:left 0.8s ease;
-}
-.enter-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(58,93,74,0.4);
-}
+.enter-btn:hover::before { left:200%; transition:left 0.8s ease; }
+.enter-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(58,93,74,0.4); }
 
 /* 立绘 */
 .character-img {
@@ -179,6 +181,8 @@ const goToLogin = () => router.push('/login')
   height: 100%; object-fit: contain;
   z-index: 2;
   filter: drop-shadow(-10px 0 10px rgba(0,0,0,0.1));
+  /* 移除视差或保留一个微小平移 */
+  transform: translateY(0);
 }
 
 /* 响应式 & 无障碍 */
@@ -190,7 +194,7 @@ const goToLogin = () => router.push('/login')
 }
 @media (max-width: 768px) {
   .home { flex-direction:column;justify-content:center;padding:40px; }
-  .content { order:2;padding-left:0;text-align:center;align-items:center; }
+  .content { order:2; padding-left:0; text-align:center;align-items:center; }
   .decor-line { display:none; }
   .character-img { position:relative;width:60%;height:auto;margin-top:20px; }
 }
