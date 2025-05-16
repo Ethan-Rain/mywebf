@@ -24,7 +24,10 @@
     <!-- 文字内容区；背景设为透明 -->
     <div class="content">
       <div class="text-block">
+
+        <h1 class="title"> 若葉 睦</h1>
         <h1 class="title">Wakaba Mutsumi</h1>
+
         <div class="underline" aria-hidden="true"></div>
         <el-button
           class="enter-btn"
