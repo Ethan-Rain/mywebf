@@ -1,25 +1,25 @@
 <template>
-  <div class="home">
+  <main class="home">
     <!-- 脉冲环（3 层 + 渐变描边） -->
-    <div class="ring ring-xsmall"></div>
-    <div class="ring ring-small"></div>
-    <div class="ring ring-large"></div>
+    <div class="ring ring-xsmall" aria-hidden="true"></div>
+    <div class="ring ring-small" aria-hidden="true"></div>
+    <div class="ring ring-large" aria-hidden="true"></div>
 
     <!-- 背景小颗粒 -->
-    <div class="dots-bg"></div>
+    <div class="dots-bg" aria-hidden="true"></div>
 
     <div class="content">
-      <div class="decor-line"></div>
+      <div class="decor-line" aria-hidden="true"></div>
       <div class="text-block">
-        <h1 class="title" role="banner">Wakaba Mutsumi</h1>
-        <div class="underline"></div>
+        <h1 class="title">Wakaba Mutsumi</h1>
+        <div class="underline" aria-hidden="true"></div>
         <el-button
           class="enter-btn"
           type="primary"
           size="large"
-          @click="goToLogin"
-          @keyup.enter="goToLogin"
-          tabindex="0"
+          @click="handleLogin"
+          @keyup.enter="handleLogin"
+          @keyup.space="handleLogin"
           aria-label="进入系统"
         >
           🥒 进入系统
@@ -28,13 +28,13 @@
     </div>
 
     <img
-      ref="character"
       class="character-img"
-      src="/img/Wakaba.png"
-      alt="Wakaba Mutsumi"
+      :src="imageUrl"
+      :alt="'Wakaba Mutsumi'"
       loading="lazy"
+      @error="handleImageError"
     />
-  </div>
+  </main>
 </template>
 
 <script setup lang="ts">
@@ -42,16 +42,29 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const goToLogin = () => router.push('/login')
+const imageUrl = ref('/img/Wakaba.png')
 
-// 正确初始化 ref
-const character = ref<HTMLElement | null>(null)
+const handleLogin = (event: KeyboardEvent | MouseEvent) => {
+  if (event instanceof KeyboardEvent && event.key !== 'Enter' && event.key !== ' ') {
+    return
+  }
+  router.push('/login')
+}
+
+const handleImageError = () => {
+  console.error('Failed to load character image')
+  // 可以在这里设置一个备用的图片URL
+  // imageUrl.value = '/fallback-image.png'
+}
 </script>
 
 <style scoped>
 :root {
-  --main-green: #4e7c5f;
-  --accent-green: #78b38b;
+  --main-green: #5e9b7f;
+  --accent-green: #86c2a1;
+  --text-shadow-color: rgba(94, 155, 127, 0.3);
+  --button-text-color: #ffffff;
+  --button-hover-color: rgba(255, 255, 255, 0.85);
 }
 
 /* 布局 */
@@ -74,7 +87,7 @@ const character = ref<HTMLElement | null>(null)
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 }
 .ring-xsmall {
-  width: 120px; height: 120px;
+  width: 100px; height: 100px;
   top: 34%; left: 14%;
   border: 2px solid var(--accent-green, #78b38b);
   animation-delay: 0.8s;
@@ -107,8 +120,8 @@ const character = ref<HTMLElement | null>(null)
   content: "";
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(rgba(78,124,95,0.05) 1px, transparent 1px);
-  background-size: 20px 20px;
+  background-image: radial-gradient(rgba(120,179,139,0.1) 2px, transparent 2px);
+  background-size: 30px 30px;
 }
 
 /* 文字区 */
@@ -157,8 +170,12 @@ const character = ref<HTMLElement | null>(null)
   padding: clamp(8px,1.5vw,12px) clamp(20px,3vw,32px);
   border-radius: 24px;
   background: linear-gradient(145deg,var(--main-green),var(--accent-green));
-  box-shadow: 0 6px 12px rgba(58,93,74,0.3);
-  transition: box-shadow 0.2s, transform 0.2s;
+  border: 2px solid rgba(94, 155, 127, 0.7);
+  box-shadow: 0 6px 12px rgba(94, 155, 127, 0.2);
+  transition: all 0.2s ease;
+  color: var(--button-text-color);
+  text-shadow: 1px 1px 2px var(--text-shadow-color);
+  opacity: 0.95;
 }
 .enter-btn:focus-visible {
   outline: 2px solid var(--accent-green);
@@ -171,8 +188,18 @@ const character = ref<HTMLElement | null>(null)
   background: rgba(255,255,255,0.2);
   transform: skewX(-25deg);
 }
-.enter-btn:hover::before { left:200%; transition:left 0.8s ease; }
-.enter-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(58,93,74,0.4); }
+.enter-btn:hover::before {
+  left:200%;
+  transition:left 0.8s ease;
+}
+.enter-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(94, 155, 127, 0.3);
+  border: 2px solid rgba(94, 155, 127, 0.9);
+  color: var(--button-hover-color);
+  text-shadow: 2px 2px 4px var(--text-shadow-color);
+  opacity: 1;
+}
 
 /* 立绘 */
 .character-img {

@@ -88,14 +88,14 @@ import { useRoute, useRouter } from 'vue-router'
 import { ArrowDown, Brush, Check, User, SwitchButton, Setting } from '@element-plus/icons-vue'
 import MenuView from '@/views/components/MenuView.vue'
 import { useThemeStore } from '@/stores/theme'
-import type { Theme } from '@/composables/useTheme'
+import type { Theme } from '@/theme'
 
 const route = useRoute()
 const router = useRouter()
 const themeStore = useThemeStore()
 
 // 获取当前主题
-const currentTheme = ref<Theme>(themeStore.currentTheme)
+const currentTheme = ref(themeStore.currentTheme as Theme)
 
 // 监听主题变化
 themeStore.$subscribe((mutation, state) => {

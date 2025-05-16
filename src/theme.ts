@@ -1,11 +1,11 @@
 // 主题颜色类型
 export interface ThemeColors {
   primary: string;
-  primaryLight: string;
+  primaryLight?: string;
   accent: string;
   textPrimary: string;
   textSecondary: string;
-  borderColor: string;
+  borderColor?: string;
   backgroundColor: string;
   cardBg: string;
   menuBg: string;
@@ -19,6 +19,14 @@ export interface Theme {
   name: string;
   label?: string;
   colors: ThemeColors;
+}
+
+// 导出主题名称类型
+export type ThemeName = 'wakaba' | 'light' | 'dark' | 'custom';
+
+// 主题映射类型
+type Themes = {
+  [key in ThemeName]: Theme;
 }
 
 // 若叶睦主题
@@ -78,14 +86,19 @@ export const lightTheme: Theme = {
   },
 };
 
-// 所有主题
-export const themes = {
+// 主题映射
+export const themes: Themes = {
   wakaba: wakabaTheme,
   dark: darkTheme,
   light: lightTheme,
-} as const;
-
-export type ThemeName = keyof typeof themes;
+  custom: {
+    name: 'custom',
+    label: '自定义主题',
+    colors: {
+      ...wakabaTheme.colors
+    }
+  }
+};
 
 // 应用主题到文档
 export function applyTheme(theme: Theme) {
@@ -100,11 +113,13 @@ export function applyTheme(theme: Theme) {
     
     // 设置Element Plus主题色
     root.style.setProperty('--el-color-primary', colors.primary);
-    root.style.setProperty('--el-color-primary-light-3', colors.primaryLight);
-    root.style.setProperty('--el-color-primary-light-5', colors.primaryLight);
-    root.style.setProperty('--el-color-primary-light-7', colors.primaryLight);
-    root.style.setProperty('--el-color-primary-light-8', colors.primaryLight);
-    root.style.setProperty('--el-color-primary-light-9', colors.primaryLight);
+    if (colors.primaryLight) {
+      root.style.setProperty('--el-color-primary-light-3', colors.primaryLight);
+      root.style.setProperty('--el-color-primary-light-5', colors.primaryLight);
+      root.style.setProperty('--el-color-primary-light-7', colors.primaryLight);
+      root.style.setProperty('--el-color-primary-light-8', colors.primaryLight);
+      root.style.setProperty('--el-color-primary-light-9', colors.primaryLight);
+    }
     root.style.setProperty('--el-color-primary-dark-2', colors.primary);
     
     // 设置滚动条颜色

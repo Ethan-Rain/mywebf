@@ -204,15 +204,34 @@ import { ElMessage } from 'element-plus'
 const { currentTheme, applyTheme } = useTheme()
 
 // 预设主题
-const presetThemes = [
+const presetThemes: Array<{
+  name: string;
+  label: string;
+  colors: {
+    primary: string;
+    primaryLight?: string;
+    accent: string;
+    textPrimary: string;
+    textSecondary: string;
+    borderColor?: string;
+    backgroundColor: string;
+    cardBg: string;
+    menuBg: string;
+    menuText: string;
+    menuHover: string;
+    menuActive: string;
+  }
+}> = [
   {
     name: 'wakaba',
     label: '若叶睦',
     colors: {
       primary: '#4e7c5f',
+      primaryLight: '#e8f3e9',
       accent: '#f8c291',
       textPrimary: '#2c3e50',
       textSecondary: '#7f8c8d',
+      borderColor: '#d1d9d6',
       backgroundColor: '#f5f9f5',
       cardBg: '#ffffff',
       menuBg: '#4e7c5f',
@@ -226,9 +245,11 @@ const presetThemes = [
     label: '明亮',
     colors: {
       primary: '#409EFF',
+      primaryLight: '#ecf5ff',
       accent: '#67C23A',
       textPrimary: '#303133',
       textSecondary: '#909399',
+      borderColor: '#e4e7ed',
       backgroundColor: '#f5f7fa',
       cardBg: '#ffffff',
       menuBg: '#304156',
@@ -242,9 +263,11 @@ const presetThemes = [
     label: '暗黑',
     colors: {
       primary: '#409EFF',
+      primaryLight: '#1e1e1e',
       accent: '#67C23A',
       textPrimary: '#e6e6e6',
       textSecondary: '#a0a0a0',
+      borderColor: '#4c4c4c',
       backgroundColor: '#141414',
       cardBg: '#1f1f1f',
       menuBg: '#1f1f1f',
@@ -258,6 +281,7 @@ const presetThemes = [
     label: '粉红',
     colors: {
       primary: '#e91e63',
+      primaryLight: '#ffe0e0',
       accent: '#ff4081',
       textPrimary: '#2c3e50',
       textSecondary: '#7f8c8d',
@@ -272,13 +296,33 @@ const presetThemes = [
 ]
 
 // 自定义主题
-const customTheme = reactive({
+const customTheme = reactive<{
+  name: string;
+  label: string;
+  colors: {
+    primary: string;
+    primaryLight: string;
+    accent: string;
+    textPrimary: string;
+    textSecondary: string;
+    borderColor: string;
+    backgroundColor: string;
+    cardBg: string;
+    menuBg: string;
+    menuText: string;
+    menuHover: string;
+    menuActive: string;
+  }
+}>({
   name: 'custom',
+  label: '自定义主题',
   colors: {
     primary: '#4e7c5f',
+    primaryLight: '#e8f3e9',
     accent: '#f8c291',
     textPrimary: '#2c3e50',
     textSecondary: '#7f8c8d',
+    borderColor: '#d1d9d6',
     backgroundColor: '#f5f9f5',
     cardBg: '#ffffff',
     menuBg: '#4e7c5f',

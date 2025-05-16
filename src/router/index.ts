@@ -31,14 +31,14 @@ const routes: RouteRecordRaw[] = [
     component: MainLayout,
     meta: { requiresAuth: true },
     children: [
-      { 
-        path: '', 
+      {
+        path: '',
         name: 'Home',
         component: HomeView,
         meta: { title: '首页', requiresAuth: true }
       },
-      { 
-        path: 'dashboard', 
+      {
+        path: 'dashboard',
         name: 'Dashboard',
         component: DashboardView,
         meta: { title: '仪表盘', requiresAuth: true }
@@ -66,12 +66,12 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const userStore = useUserStore()
   const isAuthenticated = userStore.checkLogin()
-  
+
   // 设置页面标题
   if (to.meta.title) {
-    document.title = `${to.meta.title} | 图片管理系统`
+    document.title = `${to.meta.title} | WakabaMutsumi`
   }
-  
+
   // 检查是否需要登录
   if (to.meta.requiresAuth && !isAuthenticated) {
     next({ name: 'Login', query: { redirect: to.fullPath } })

@@ -4,14 +4,16 @@
 
 <script setup lang="ts">
 import { ref, provide, watch } from 'vue';
-import { Theme, themes, applyTheme, loadTheme } from '@/theme';
+import type { ThemeName } from '@/theme';
+import { themes, applyTheme, loadTheme } from '@/theme';
 
-const currentTheme = ref<Theme>(loadTheme());
+const currentTheme = ref<ReturnType<typeof loadTheme>>(loadTheme());
 
 // 应用主题
-const setTheme = (themeName: keyof typeof themes) => {
-  currentTheme.value = themes[themeName];
-  applyTheme(currentTheme.value);
+const setTheme = (themeName: ThemeName) => {
+  const theme = themes[themeName];
+  currentTheme.value = theme;
+  applyTheme(theme);
 };
 
 // 监听主题变化

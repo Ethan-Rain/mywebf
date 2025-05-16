@@ -20,15 +20,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref, inject, computed } from 'vue';
+import { computed, inject } from 'vue';
 import { Brush } from '@element-plus/icons-vue';
-import { ThemeName } from '@/theme';
+import type { ThemeName } from '@/theme';
 
-const themeContext = inject('theme');
-const currentTheme = themeContext?.currentTheme || ref({ name: 'wakaba' });
-const setTheme = themeContext?.setTheme || ((name: ThemeName) => console.log('Set theme:', name));
+interface ThemeContext {
+  currentTheme: { value: { name: ThemeName } };
+  setTheme: (name: ThemeName) => void;
+}
 
-const themeNames = ['wakaba', 'light', 'dark'];
+const themeContext = inject<ThemeContext>('theme');
+const currentTheme = themeContext?.currentTheme || { value: { name: 'wakaba' as const } };
+
+const setTheme = (name: ThemeName) => {
+  themeContext?.setTheme?.(name);
+};
+
+const themeNames: ThemeName[] = ['wakaba', 'light', 'dark', 'custom'];
 
 const currentThemeName = computed(() => currentTheme.value?.name || 'wakaba');
 
