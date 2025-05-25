@@ -71,7 +71,7 @@ const rules = ref({
 
 // 注册处理
 const handleRegister = async () => {
-  await formRef.value?.validate(async (valid) => {
+  await formRef.value?.validate(async (valid: boolean) => {
     if (!valid) return
     try {
       const res = await registerApi(form.value)

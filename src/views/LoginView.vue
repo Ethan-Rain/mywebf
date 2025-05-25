@@ -44,7 +44,7 @@ const rules = ref({
 
 // 登录处理
 const handleLogin = async () => {
-  await formRef.value?.validate(async (valid) => {
+  await formRef.value?.validate(async (valid: boolean) => {
     if (!valid) return
     try {
       const res = await loginApi(form.value.username, form.value.password)
