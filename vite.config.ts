@@ -20,5 +20,14 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  server: {
+    proxy: {
+      '/auth': {
+        target: 'http://localhost:8089', // 后端服务地址
+        changeOrigin: true, // 允许跨域
+        secure: false // 关闭HTTPS验证（如果后端是HTTP）
+      }
+    }
   }
 })

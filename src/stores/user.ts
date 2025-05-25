@@ -1,74 +1,42 @@
+// src/stores/user.ts
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { logoutApi } from '@/utils/request'
 import { useRouter } from 'vue-router'
 
-export interface UserInfo {
-  username: string
-  token?: string
-  avatar?: string
-  roles?: string[]
-}
-
-export const useUserStore = defineStore('user', () => {
-  const userInfo = ref<UserInfo | null>(null)
-  const token = ref<string>('')
-  const router = useRouter()
-
-  // 登录
-  const login = async (loginData: { username: string; password: string }) => {
-    try {
-      // 这里应该是调用登录API
-      // const { data } = await loginApi(loginData)
-      
-      // 模拟登录成功
-      const mockData = {
-        username: loginData.username,
-        token: 'mock_token_' + Math.random().toString(36).substr(2),
-        roles: ['admin']
+export const useUserStore = defineStore('user', {
+  state: () => ({
+    token: localStorage.getItem('token') || null,
+    username: ''
+  }),
+  actions: {
+    // 保存登录状态
+    setLoginState(token: string, username: string) {
+      this.token = token
+      this.username = username
+      localStorage.setItem('token', token)
+    },
+    // 执行注销操作
+    async logout() {
+      try {
+        await logoutApi()
+        this.clearLoginState()
+        const router = useRouter()
+        router.push('/login')
+      } catch (error) {
+        console.error('注销失败:', error)
       }
-      
-      userInfo.value = mockData
-      token.value = mockData.token
-      
-      // 保存到本地存储
-      localStorage.setItem('token', mockData.token)
-      localStorage.setItem('userInfo', JSON.stringify(mockData))
-      
-      return mockData
-    } catch (error) {
-      console.error('Login error:', error)
-      throw new Error('登录失败')
+    },
+    // 清除登录状态
+    clearLoginState() {
+      this.token = null
+      this.username = ''
+      localStorage.removeItem('token')
+    },
+
+    // 检查用户是否已登录
+    checkLogin(): boolean {
+      return !!this.token || !!localStorage.getItem('token')
     }
-  }
-
-  // 登出
-  const logout = () => {
-    userInfo.value = null
-    token.value = ''
-    localStorage.removeItem('token')
-    localStorage.removeItem('userInfo')
-    router.push('/login')
-  }
-
-  // 检查登录状态
-  const checkLogin = () => {
-    const localToken = localStorage.getItem('token')
-    const localUser = localStorage.getItem('userInfo')
-    
-    if (localToken && localUser) {
-      token.value = localToken
-      userInfo.value = JSON.parse(localUser)
-      return true
-    }
-    return false
-  }
-
-  return {
-    userInfo,
-    token,
-    login,
-    logout,
-    checkLogin
   }
 })
 
