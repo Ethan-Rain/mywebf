@@ -11,6 +11,7 @@ import LoginView from '@/views/LoginView.vue'
 import HomeView from '@/views/HomeView.vue'
 import DashboardView from '@/views/dashboard/DashboardView.vue'
 import ThemeSettings from '@/views/settings/ThemeSettings.vue'
+import MediaView from '@/views/MediaView.vue'
 
 // 路由配置
 const routes: RouteRecordRaw[] = [
@@ -48,6 +49,12 @@ const routes: RouteRecordRaw[] = [
         name: 'ThemeSettings',
         component: ThemeSettings,
         meta: { title: '主题设置', requiresAuth: true }
+      },
+      {
+        path: 'media',
+        name: 'Media',
+        component: MediaView,
+        meta: { title: '媒体库', requiresAuth: true }
       }
     ]
   },

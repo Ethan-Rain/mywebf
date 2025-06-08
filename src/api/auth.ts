@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 登录接口
 export const loginApi = (username: string, password: string) => {
   return request({
-    url: '/auth/login',
+    url: '/security/auth/login',
     method: 'post',
     data: {
       username,

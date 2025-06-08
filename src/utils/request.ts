@@ -1,35 +1,54 @@
-// 引入 axios 及其类型定义
+// src/utils/request.ts
 import axios from 'axios'
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
-// 创建一个 axios 实例，用于发送 HTTP 请求
-const service: AxiosInstance = axios.create({
-  baseURL: '/api', // 设置请求的基础路径（全局前缀）
-  timeout: 10000, // 请求超时时间（单位：毫秒）
+const request = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  timeout: 30000,
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+    'X-Requested-With': 'XMLHttpRequest'
+  }
 })
 
-// 请求拦截器：在请求发出之前做一些处理
-service.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
-    // 获取本地存储中的 token
-    const token = localStorage.getItem('token')
-    if (token) {
-      // 如果存在 token，则将其添加到请求头中
-      config.headers = {
-        ...config.headers,
-        Authorization: `Bearer ${token}`, // 使用 Bearer Token 认证方式
+// 请求拦截器
+request.interceptors.request.use(
+  config => {
+    return config
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
+
+// 响应拦截器
+request.interceptors.response.use(
+  response => {
+    // 确保响应数据是Blob类型（如果是二进制响应）
+    if (response.config.responseType === 'blob' && response.data) {
+      // 如果响应是Blob类型，确保它的type正确
+      if (response.data instanceof Blob) {
+        const contentType = response.headers['content-type']
+        if (contentType) {
+          // 创建一个新的Blob，确保type正确
+          const blob = new Blob([response.data], { type: contentType })
+          response.data = blob
+        }
       }
     }
-    return config // 返回修改后的请求配置
+    return response
   },
-  (error) => Promise.reject(error) // 如果请求出错，返回错误信息
+  error => {
+    console.error('API Error:', error)
+    if (error.response) {
+      console.error('Error response:', {
+        status: error.response.status,
+        statusText: error.response.statusText,
+        data: error.response.data
+      })
+    }
+    return Promise.reject(error)
+  }
 )
 
-// 响应拦截器：在响应返回之后做一些处理
-service.interceptors.response.use(
-  (response: AxiosResponse) => response.data, // 直接返回响应数据部分
-  (error) => Promise.reject(error) // 如果响应出错，返回错误信息
-)
-
-// 导出该 axios 实例，供其他文件使用
-export default service
+export default request
