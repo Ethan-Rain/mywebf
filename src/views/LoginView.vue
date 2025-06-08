@@ -34,7 +34,14 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button type="primary" @click="onLogin">登录</el-button>
+            <el-button 
+              type="primary" 
+              :loading="loading" 
+              :disabled="loading"
+              @click="onLogin"
+            >
+              {{ loading ? '登录中...' : '登录' }}
+            </el-button>
           </el-form-item>
         </el-form>
       </el-card>
@@ -42,13 +49,18 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { loginApi } from '@/api/auth';
+
+const router = useRouter();
 
 const form = ref({
   username: '',
   password: ''
 });
+const loading = ref(false);
 const rules = {
   username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
   password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
@@ -56,10 +68,28 @@ const rules = {
 const formRef = ref(null);
 
 const onLogin = () => {
-  formRef.value.validate((valid) => {
-    if (valid) {
+  formRef.value.validate(async (valid) => {
+    if (!valid) return;
+    
+    loading.value = true;
+    try {
       console.log('登录中...', form.value);
-      // 登录逻辑
+      const response = await loginApi(form.value.username, form.value.password);
+      console.log('登录成功', response);
+      
+      // 保存 token 到本地存储
+      if (response && response.token) {
+        localStorage.setItem('token', response.token);
+        // 登录成功后跳转到首页
+        router.push('/');
+      } else {
+        ElMessage.error('登录失败：无效的响应格式');
+      }
+    } catch (error) {
+      // 错误信息已经在 request.ts 中统一处理
+      console.error('登录失败:', error);
+    } finally {
+      loading.value = false;
     }
   });
 };

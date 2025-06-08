@@ -1,6 +1,6 @@
 // src/stores/user.ts
 import { defineStore } from 'pinia'
-import { logoutApi } from '@/utils/request'
+import { logoutApi } from '@/api/auth'
 import { useRouter } from 'vue-router'
 
 export const useUserStore = defineStore('user', {
