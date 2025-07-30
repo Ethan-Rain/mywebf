@@ -23,10 +23,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue'
-import { useMediaLoader } from '@/composables/useMediaLoader'
-import MediaFilter from '@/components/media/MediaFilter.vue'
-import MediaItem from '@/components/media/MediaItem.vue'
-import MediaLoader from '@/components/media/MediaLoader.vue'
+import { useMediaLoader } from '../composables/useMediaLoader'
+import MediaFilter  from '../components/media/MediaFilter.vue'
+import MediaItem from '../components/media/MediaItem.vue'
+import MediaLoader from '../components/media/MediaLoader.vue'
 
 const {
   mediaItems,

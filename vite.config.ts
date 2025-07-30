@@ -22,6 +22,8 @@ export default defineConfig({
     }
   },
   server: {
+    host: '0.0.0.0', // 或 true，表示监听所有网络接口，包括你的局域网 IP
+    port: 5173,       // 可选：指定端口
     proxy: {
       // 代理 /api/images 开头的请求到后端
       '/api/images': {

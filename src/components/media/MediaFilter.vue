@@ -5,13 +5,13 @@
         {{ cat.label }}
       </option>
     </select>
-    
+
     <select v-model="localMediaType" class="filter-select" aria-label="选择媒体类型">
       <option v-for="type in mediaTypes" :key="type.value" :value="type.value">
         {{ type.label }}
       </option>
     </select>
-    
+
     <button class="filter-btn" @click="handleRefresh" aria-label="刷新">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M23 4v6h-6"></path>

@@ -8,10 +8,10 @@ export const loginApi = (username: string, password: string) => {
     data: {
       username,
       password
-    }
+    },
+    withCredentials: true  // 必须
   })
 }
-
 // 登出接口
 export const logoutApi = () => {
   return request({

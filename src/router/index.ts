@@ -12,6 +12,7 @@ import HomeView from '@/views/HomeView.vue'
 import DashboardView from '@/views/dashboard/DashboardView.vue'
 import ThemeSettings from '@/views/settings/ThemeSettings.vue'
 import MediaView from '@/views/MediaView.vue'
+import RandomImage from '@/views/RandomImage.vue'
 
 // 路由配置
 const routes: RouteRecordRaw[] = [
@@ -39,22 +40,28 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '首页', requiresAuth: true }
       },
       {
-        path: 'dashboard',
+        path: '/dashboard',
         name: 'Dashboard',
         component: DashboardView,
         meta: { title: '仪表盘', requiresAuth: true }
       },
       {
-        path: 'settings/theme',
+        path: '/settings/theme',
         name: 'ThemeSettings',
         component: ThemeSettings,
         meta: { title: '主题设置', requiresAuth: true }
       },
       {
-        path: 'media',
+        path: '/media',
         name: 'Media',
         component: MediaView,
         meta: { title: '媒体库', requiresAuth: true }
+      },
+      {
+        path: '/random-image',
+        name: 'RandomImage',
+        component: RandomImage,
+        meta: { title: '随机图片', requiresAuth: true }
       }
     ]
   },

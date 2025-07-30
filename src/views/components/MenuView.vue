@@ -12,7 +12,7 @@
         <el-icon v-else class="collapse-icon"><Fold /></el-icon>
       </div>
 
-      <el-menu-item index="/">
+      <el-menu-item index="/home">
         <el-icon><House /></el-icon>
         <span>首页</span>
       </el-menu-item>
@@ -33,6 +33,10 @@
         <el-menu-item index="/upload">
           <el-icon><Upload /></el-icon>
           <span>上传</span>
+        </el-menu-item>
+        <el-menu-item index="/random-image">
+          <el-icon><PictureRounded /></el-icon>
+          <span>随机图片</span>
         </el-menu-item>
       </el-sub-menu>
 
@@ -57,10 +61,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { 
-  Fold, 
-  House, 
-  Picture, 
+import {
+  Fold,
+  House,
+  Picture,
   DataAnalysis,
   PictureRounded,
   Upload,
@@ -217,7 +221,7 @@ const toggleCollapse = () => {
   :deep(.el-menu--collapse) {
     width: 100%;
   }
-  
+
   .logo-container {
     justify-content: center;
   }

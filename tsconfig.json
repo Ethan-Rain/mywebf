@@ -12,7 +12,8 @@
     }
   ],
   "compilerOptions": {
-    "types": ["ani-cursor"],
+    "types": ["ani-cursor",
+  "marked"],
     "paths": {
       "ani-cursor": ["./src/types/ani-cursor"]
     }

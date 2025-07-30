@@ -42,7 +42,7 @@ export function useMediaLoader() {
       console.log(`Fetching random ${type}...`)
 
       const response = await getRandomMedia(type, {
-        category: currentCategory.value || 1
+        category: Number(currentCategory.value) || 1
       })
 
       if (!response || !response.data) {

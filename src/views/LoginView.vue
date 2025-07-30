@@ -34,9 +34,9 @@
           </el-form-item>
 
           <el-form-item>
-            <el-button 
-              type="primary" 
-              :loading="loading" 
+            <el-button
+              type="primary"
+              :loading="loading"
               :disabled="loading"
               @click="onLogin"
             >
@@ -53,10 +53,23 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { loginApi } from '@/api/auth';
+import { ElMessage, ElForm } from 'element-plus';  // 导入ElForm类型
+
+// 定义表单数据类型
+interface FormData {
+  username: string;
+  password: string;
+}
+
+// 定义登录响应数据类型
+interface LoginResponse {
+  token: string;
+  [key: string]: any;  // 允许其他额外字段
+}
 
 const router = useRouter();
 
-const form = ref({
+const form = ref<FormData>({
   username: '',
   password: ''
 });
@@ -65,29 +78,34 @@ const rules = {
   username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
   password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
 };
-const formRef = ref(null);
+// 为formRef指定正确类型
+const formRef = ref<InstanceType<typeof ElForm> | null>(null);
 
 const onLogin = () => {
+  // 先判断formRef是否存在
+  if (!formRef.value) return;
+
   formRef.value.validate(async (valid) => {
     if (!valid) return;
-    
+
     loading.value = true;
     try {
       console.log('登录中...', form.value);
-      const response = await loginApi(form.value.username, form.value.password);
+      // 调用登录接口并指定返回类型
+      const response = await loginApi(form.value.username, form.value.password) as { data: LoginResponse };
       console.log('登录成功', response);
-      
-      // 保存 token 到本地存储
-      if (response && response.token) {
-        localStorage.setItem('token', response.token);
+
+      // 保存token到本地存储（修正token获取路径）
+      if (response && response.data && response.data.token) {
+        localStorage.setItem('token', response.data.token);
         // 登录成功后跳转到首页
         router.push('/');
       } else {
         ElMessage.error('登录失败：无效的响应格式');
       }
     } catch (error) {
-      // 错误信息已经在 request.ts 中统一处理
       console.error('登录失败:', error);
+      ElMessage.error('登录失败：用户名或密码错误');
     } finally {
       loading.value = false;
     }
@@ -117,8 +135,7 @@ const onLogin = () => {
   z-index: 0;
 }
 
-/* 轨道系统样式（略）——建议直接引入你首页对应样式 */
-
+/* 轨道系统样式 */
 .orbit-system {
   position: absolute;
   width: 100%;
