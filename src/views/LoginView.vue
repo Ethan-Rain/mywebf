@@ -64,9 +64,8 @@ interface FormData {
 // 定义登录响应数据类型
 interface LoginResponse {
   token: string;
-  [key: string]: any;  // 允许其他额外字段
+  [key: string]: string | number | boolean | object | null | undefined;  // 允许其他基本字段类型
 }
-
 const router = useRouter();
 
 const form = ref<FormData>({
